@@ -1,13 +1,16 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { store } from 'store';
+import { store, persistor } from 'store';
 import { MainWrapper } from 'components/MainWrapper';
 
 export function App() {
   return (
     <Provider store={store}>
-      <MainWrapper />
+      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+        <MainWrapper />
+      </PersistGate>
     </Provider>
   );
 }

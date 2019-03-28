@@ -21,7 +21,12 @@ export class MainWrapper extends Component {
   }
 
   componentDidMount() {
-    this.timeout = setTimeout(() => this.props.setSome('some text'), 1000);
+    if (!this.props.some) {
+      this.timeout = setTimeout(
+        () => this.props.setSome(new Date().toString()),
+        1000
+      );
+    }
   }
 
   componentWillUnmount() {

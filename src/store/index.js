@@ -3,6 +3,9 @@ import thunk from 'redux-thunk';
 
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web and AsyncStorage for react-native
+
 import { rootReducer } from './rootReducer';
 
 const composeEnhancers =
@@ -12,13 +15,17 @@ const composeEnhancers =
         // Specify name here, actionsBlacklist, actionsCreators and other options if needed
       });
 
+// For redux-persist
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = createStore(
-  rootReducer,
+  //rootReducer,
+  persistedReducer, // for redux persist
   composeEnhancers(applyMiddleware(thunk))
 );
-
-// without Redux DevTools:
-// export const store = createStore(
-//   rootReducer,
-//   applyMiddleware(thunk, logger)
-// );
+export const persistor = persistStore(store);
